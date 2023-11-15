@@ -348,8 +348,15 @@ function countVowels(str) {
  *   isPalindrome('No lemon, no melon') => true
  */
 function isPalindrome(str) {
-  const string = str.toLowerCase();
-  return string === string.split('').reverse().join('');
+  const regExp = /[A-Z]|[a-z]/;
+  let resString = '';
+  for (let i = 0, { length } = str; i < length; i += 1) {
+    if (regExp.test(str[i])) {
+      resString += str[i].toLowerCase();
+    }
+  }
+  const reverseStr = resString.split('').reverse().join('');
+  return resString === reverseStr;
 }
 
 /**
@@ -448,8 +455,9 @@ function getStringFromTemplate(firstName, lastName) {
  *   extractNameFromTemplate('Hello, John Doe!') => 'John Doe'
  *   extractNameFromTemplate('Hello, Chuck Norris!') => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const template = /Hello, |!/g;
+  return value.replace(template, '');
 }
 
 /**

@@ -483,8 +483,8 @@ function unbracketTag(str) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -503,8 +503,40 @@ function extractEmails(/* str */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function helperRot13(start, end, charCode) {
+  const isInRange = charCode >= start && charCode <= end;
+  const shift = 13;
+  if (isInRange) {
+    const newCharCode = charCode + shift;
+    return newCharCode > end ? newCharCode - end + start - 1 : newCharCode;
+  }
+  return charCode;
+}
+function encodeToRot13(str) {
+  const startRangeUpper = 65;
+  const endRangeUpper = 90;
+  const startRangeLower = 97;
+  const endRangeLower = 122;
+  let res = '';
+  for (let i = 0, { length } = str; i < length; i += 1) {
+    const charCode = str[i].charCodeAt();
+    const firstRot13 = helperRot13(startRangeLower, endRangeLower, charCode);
+    const secondRot13 = helperRot13(startRangeUpper, endRangeUpper, charCode);
+    switch (true) {
+      case charCode === firstRot13 && charCode === secondRot13:
+        res += str[i];
+        break;
+      case charCode !== firstRot13:
+        res += String.fromCharCode(firstRot13);
+        break;
+      case charCode !== secondRot13:
+        res += String.fromCharCode(secondRot13);
+        break;
+      default:
+        break;
+    }
+  }
+  return res;
 }
 
 /**
